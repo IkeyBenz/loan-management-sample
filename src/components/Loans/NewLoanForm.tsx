@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { createLoan } from "@/app/actions/loans/create";
 import { updateLoan } from "@/app/actions/loans/update";
 import type { Prisma } from "@/generated/prisma";
+import CurrencyInput from "react-currency-input-field";
 
 type Status = Prisma.StatusGetPayload<Record<string, never>>;
 type Lender = Prisma.UserGetPayload<Record<string, never>>;
@@ -51,6 +52,11 @@ export default function NewLoanForm({
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    setForm({ ...form, amount: raw });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -59,7 +65,7 @@ export default function NewLoanForm({
         if (editMode && initialValues) {
           await updateLoan({
             id: initialValues.id,
-            amount: parseFloat(form.amount),
+            amount: parseFloat(form.amount || "0"),
             interestRate: parseFloat(form.interestRate),
             term: parseInt(form.term, 10),
             statusId: parseInt(form.statusId, 10),
@@ -69,7 +75,7 @@ export default function NewLoanForm({
           router.push(`/loans/${initialValues.id}`);
         } else {
           await createLoan({
-            amount: parseFloat(form.amount),
+            amount: parseFloat(form.amount || "0"),
             interestRate: parseFloat(form.interestRate),
             term: parseInt(form.term, 10),
             statusId: parseInt(form.statusId, 10),
@@ -87,19 +93,17 @@ export default function NewLoanForm({
   return (
     <form className="space-y-4" onSubmit={handleSubmit} aria-label="Loan Form">
       <div>
-        <label htmlFor="amount" className="block mb-1 font-medium">
-          Amount
-        </label>
-        <input
+        <label className="block mb-1 font-medium">Amount</label>
+        <CurrencyInput
           id="amount"
-          type="number"
           name="amount"
+          placeholder="$0.00"
           value={form.amount}
-          onChange={handleChange}
+          decimalsLimit={2}
+          prefix="$"
           className="w-full rounded border px-3 py-2"
           required
-          min="0"
-          step="0.01"
+          onValueChange={(value) => setForm({ ...form, amount: value ?? "" })}
           aria-label="Loan Amount"
         />
       </div>
