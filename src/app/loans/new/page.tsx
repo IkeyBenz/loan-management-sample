@@ -1,10 +1,11 @@
-import { Database } from "@/lib/data";
+import { getStatusList } from "@/app/actions/statuses/list";
+import { getUsersList } from "@/app/actions/users/list";
 import NewLoanForm from "./NewLoanForm";
 
 export default async function NewLoanPage() {
-  // Fetch status and lender options from the database
-  const statuses = await Database.status.findMany({ orderBy: { name: "asc" } });
-  const lenders = await Database.user.findMany({ orderBy: { name: "asc" } });
+  // Fetch status and lender options using the new actions
+  const statuses = await getStatusList();
+  const lenders = await getUsersList();
 
   return (
     <div className="max-w-xl mx-auto bg-card rounded-lg shadow p-8 mt-8">

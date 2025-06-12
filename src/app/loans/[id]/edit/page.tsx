@@ -1,6 +1,8 @@
-import { Database } from "@/lib/data";
+import { getStatusList } from "@/app/actions/statuses/list";
+import { getUsersList } from "@/app/actions/users/list";
 import NewLoanForm from "../../new/NewLoanForm";
 import { notFound } from "next/navigation";
+import { Database } from "@/lib/data";
 
 export default async function EditLoanPage({
   params,
@@ -15,8 +17,8 @@ export default async function EditLoanPage({
   });
   if (!loan) return notFound();
 
-  const statuses = await Database.status.findMany({ orderBy: { name: "asc" } });
-  const lenders = await Database.user.findMany({ orderBy: { name: "asc" } });
+  const statuses = await getStatusList();
+  const lenders = await getUsersList();
 
   return (
     <div className="max-w-xl mx-auto bg-card rounded-lg shadow p-8 mt-8">
