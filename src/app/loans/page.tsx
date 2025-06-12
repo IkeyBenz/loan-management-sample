@@ -1,6 +1,7 @@
 import { RootLayout } from "@/components/layout/root-layout";
 import { Database } from "@/lib/data";
 import type { Prisma } from "@/generated/prisma";
+import Link from "next/link";
 
 // Infer the correct type for a loan with status included
 type LoanWithStatus = Prisma.LoanGetPayload<{ include: { status: true } }>;
@@ -56,9 +57,11 @@ export default async function LoansListPage() {
             </div>
           )}
           <div className="flex justify-end mt-4">
-            <button className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
-              Add New Loan
-            </button>
+            <Link href="/loans/new">
+              <button className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
+                Add New Loan
+              </button>
+            </Link>
           </div>
         </div>
       </div>
