@@ -1,4 +1,3 @@
-import { RootLayout } from "@/components/layout/root-layout";
 import { Database } from "@/lib/data";
 import type { Prisma } from "@/generated/prisma";
 import LoanTable from "./LoanTable";
@@ -15,10 +14,5 @@ export default async function LoansListPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  // Add a client-side component for row navigation
-  return (
-    <RootLayout>
-      <LoanTable loans={loans} />
-    </RootLayout>
-  );
+  return <LoanTable loans={loans} />;
 }
