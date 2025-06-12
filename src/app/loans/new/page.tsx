@@ -1,6 +1,6 @@
 import { getStatusList } from "@/app/actions/statuses/list";
 import { getUsersList } from "@/app/actions/users/list";
-import NewLoanForm from "./NewLoanForm";
+import NewLoanForm from "@/components/Loans/NewLoanForm";
 
 export default async function NewLoanPage() {
   // Fetch status and lender options using the new actions

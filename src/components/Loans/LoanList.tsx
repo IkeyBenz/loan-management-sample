@@ -1,8 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import type { Prisma } from "@/generated/prisma";
 
-export default function LoanTable({ loans }: { loans: any[] }) {
+type LoanWithStatus = Prisma.LoanGetPayload<{ include: { status: true } }>;
+
+export default function LoanList({ loans }: { loans: LoanWithStatus[] }) {
   const router = useRouter();
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-8">
