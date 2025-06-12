@@ -66,7 +66,12 @@ export default function LoanList({ loans }: { loans: LoanWithStatus[] }) {
                     }}
                   >
                     <td className="px-4 py-2">{loan.id}</td>
-                    <td className="px-4 py-2">${loan.amount.toFixed(2)}</td>
+                    <td className="px-4 py-2">
+                      {loan.amount.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })}
+                    </td>
                     <td className="px-4 py-2">{loan.interestRate}%</td>
                     <td className="px-4 py-2">{loan.term} mo</td>
                     <td className="px-4 py-2">{loan.status?.name ?? "-"}</td>
