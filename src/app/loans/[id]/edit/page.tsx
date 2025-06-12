@@ -1,0 +1,32 @@
+import { Database } from "@/lib/data";
+import NewLoanForm from "../../new/NewLoanForm";
+import { notFound } from "next/navigation";
+
+export default async function EditLoanPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const loanId = Number(params.id);
+  if (isNaN(loanId)) return notFound();
+
+  const loan = await Database.loan.findUnique({
+    where: { id: loanId },
+  });
+  if (!loan) return notFound();
+
+  const statuses = await Database.status.findMany({ orderBy: { name: "asc" } });
+  const lenders = await Database.user.findMany({ orderBy: { name: "asc" } });
+
+  return (
+    <div className="max-w-xl mx-auto bg-card rounded-lg shadow p-8 mt-8">
+      <h1 className="text-2xl font-bold mb-6 text-primary">Edit Loan</h1>
+      <NewLoanForm
+        statuses={statuses}
+        lenders={lenders}
+        initialValues={loan}
+        editMode={true}
+      />
+    </div>
+  );
+}

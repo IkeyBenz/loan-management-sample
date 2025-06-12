@@ -1,7 +1,8 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createLoan } from "./actions";
+import { createLoan } from "../createActions";
+import { updateLoan } from "../editActions";
 
 interface Status {
   id: number;
@@ -11,25 +12,51 @@ interface Lender {
   id: number;
   name: string;
 }
+interface Loan {
+  id: number;
+  amount: number;
+  interestRate: number;
+  term: number;
+  statusId: number;
+  borrower: string;
+  lenderId: number;
+}
 
 export default function NewLoanForm({
   statuses,
   lenders,
+  initialValues,
+  editMode,
 }: {
   statuses: Status[];
   lenders: Lender[];
+  initialValues?: Loan;
+  editMode?: boolean;
 }) {
   const [form, setForm] = useState({
-    amount: "",
-    interestRate: "",
-    term: "",
-    statusId: "",
-    borrower: "",
-    lenderId: "",
+    amount: initialValues ? initialValues.amount.toString() : "",
+    interestRate: initialValues ? initialValues.interestRate.toString() : "",
+    term: initialValues ? initialValues.term.toString() : "",
+    statusId: initialValues ? initialValues.statusId.toString() : "",
+    borrower: initialValues ? initialValues.borrower : "",
+    lenderId: initialValues ? initialValues.lenderId.toString() : "",
   });
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  useEffect(() => {
+    if (initialValues) {
+      setForm({
+        amount: initialValues.amount.toString(),
+        interestRate: initialValues.interestRate.toString(),
+        term: initialValues.term.toString(),
+        statusId: initialValues.statusId.toString(),
+        borrower: initialValues.borrower,
+        lenderId: initialValues.lenderId.toString(),
+      });
+    }
+  }, [initialValues]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -42,17 +69,30 @@ export default function NewLoanForm({
     setError("");
     startTransition(async () => {
       try {
-        await createLoan({
-          amount: parseFloat(form.amount),
-          interestRate: parseFloat(form.interestRate),
-          term: parseInt(form.term, 10),
-          statusId: parseInt(form.statusId, 10),
-          borrower: form.borrower,
-          lenderId: parseInt(form.lenderId, 10),
-        });
-        router.push("/loans");
-      } catch (err: any) {
-        setError(err.message || "Failed to create loan");
+        if (editMode && initialValues) {
+          await updateLoan({
+            id: initialValues.id,
+            amount: parseFloat(form.amount),
+            interestRate: parseFloat(form.interestRate),
+            term: parseInt(form.term, 10),
+            statusId: parseInt(form.statusId, 10),
+            borrower: form.borrower,
+            lenderId: parseInt(form.lenderId, 10),
+          });
+          router.push(`/loans/${initialValues.id}`);
+        } else {
+          await createLoan({
+            amount: parseFloat(form.amount),
+            interestRate: parseFloat(form.interestRate),
+            term: parseInt(form.term, 10),
+            statusId: parseInt(form.statusId, 10),
+            borrower: form.borrower,
+            lenderId: parseInt(form.lenderId, 10),
+          });
+          router.push("/loans");
+        }
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Failed to save loan");
       }
     });
   };
@@ -150,7 +190,13 @@ export default function NewLoanForm({
           className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
           disabled={isPending}
         >
-          {isPending ? "Creating..." : "Create Loan"}
+          {isPending
+            ? editMode
+              ? "Saving..."
+              : "Creating..."
+            : editMode
+            ? "Save Changes"
+            : "Create Loan"}
         </button>
       </div>
     </form>

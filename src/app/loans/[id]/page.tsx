@@ -65,6 +65,11 @@ export default async function LoanDetailPage({
         <Link href="/loans" className="text-muted-foreground hover:underline">
           Back to Loans
         </Link>
+        <Link href={`/loans/${loan.id}/edit`}>
+          <button className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
+            Edit
+          </button>
+        </Link>
       </div>
     </div>
   );
