@@ -1,8 +1,8 @@
 "use client";
 import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createLoan } from "../createActions";
-import { updateLoan } from "../editActions";
+import { createLoan } from "@/app/actions/loans/create";
+import { updateLoan } from "@/app/actions/loans/update";
 
 interface Status {
   id: number;

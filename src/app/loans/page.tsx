@@ -1,18 +1,8 @@
-import { Database } from "@/lib/data";
-import type { Prisma } from "@/generated/prisma";
+import { getLoanList, LoanWithStatus } from "@/app/actions/loans/list";
 import LoanTable from "./LoanTable";
 
-// Infer the correct type for a loan with status included
-type LoanWithStatus = Prisma.LoanGetPayload<{ include: { status: true } }>;
-
 export default async function LoansListPage() {
-  // Fetch loans from the database
-  const loans: LoanWithStatus[] = await Database.loan.findMany({
-    include: {
-      status: true,
-    },
-    orderBy: { createdAt: "desc" },
-  });
-
+  // Fetch loans from the new action
+  const loans: LoanWithStatus[] = await getLoanList();
   return <LoanTable loans={loans} />;
 }

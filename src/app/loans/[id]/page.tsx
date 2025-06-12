@@ -1,4 +1,4 @@
-import { Database } from "@/lib/data";
+import { getLoanById } from "@/app/actions/loans/read";
 import Link from "next/link";
 
 export default async function LoanDetailPage({
@@ -12,13 +12,7 @@ export default async function LoanDetailPage({
       <div className="text-center text-red-500 mt-12">Invalid loan ID.</div>
     );
   }
-  const loan = await Database.loan.findUnique({
-    where: { id: loanId },
-    include: {
-      status: true,
-      lender: true,
-    },
-  });
+  const loan = await getLoanById(loanId);
   if (!loan) {
     return (
       <div className="text-center text-red-500 mt-12">Loan not found.</div>
