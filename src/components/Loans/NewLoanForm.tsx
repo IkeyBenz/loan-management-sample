@@ -85,10 +85,13 @@ export default function NewLoanForm({
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-4" onSubmit={handleSubmit} aria-label="Loan Form">
       <div>
-        <label className="block mb-1 font-medium">Amount</label>
+        <label htmlFor="amount" className="block mb-1 font-medium">
+          Amount
+        </label>
         <input
+          id="amount"
           type="number"
           name="amount"
           value={form.amount}
@@ -97,11 +100,15 @@ export default function NewLoanForm({
           required
           min="0"
           step="0.01"
+          aria-label="Loan Amount"
         />
       </div>
       <div>
-        <label className="block mb-1 font-medium">Interest Rate (%)</label>
+        <label htmlFor="interestRate" className="block mb-1 font-medium">
+          Interest Rate (%)
+        </label>
         <input
+          id="interestRate"
           type="number"
           name="interestRate"
           value={form.interestRate}
@@ -110,11 +117,15 @@ export default function NewLoanForm({
           required
           min="0"
           step="0.01"
+          aria-label="Interest Rate"
         />
       </div>
       <div>
-        <label className="block mb-1 font-medium">Term (months)</label>
+        <label htmlFor="term" className="block mb-1 font-medium">
+          Term (months)
+        </label>
         <input
+          id="term"
           type="number"
           name="term"
           value={form.term}
@@ -123,16 +134,21 @@ export default function NewLoanForm({
           required
           min="1"
           step="1"
+          aria-label="Loan Term"
         />
       </div>
       <div>
-        <label className="block mb-1 font-medium">Status</label>
+        <label htmlFor="statusId" className="block mb-1 font-medium">
+          Status
+        </label>
         <select
+          id="statusId"
           name="statusId"
           value={form.statusId}
           onChange={handleChange}
           className="w-full rounded border px-3 py-2"
           required
+          aria-label="Loan Status"
         >
           <option value="">Select status</option>
           {statuses.map((status) => (
@@ -143,24 +159,32 @@ export default function NewLoanForm({
         </select>
       </div>
       <div>
-        <label className="block mb-1 font-medium">Borrower</label>
+        <label htmlFor="borrower" className="block mb-1 font-medium">
+          Borrower
+        </label>
         <input
+          id="borrower"
           type="text"
           name="borrower"
           value={form.borrower}
           onChange={handleChange}
           className="w-full rounded border px-3 py-2"
           required
+          aria-label="Borrower Name"
         />
       </div>
       <div>
-        <label className="block mb-1 font-medium">Lender</label>
+        <label htmlFor="lenderId" className="block mb-1 font-medium">
+          Lender
+        </label>
         <select
+          id="lenderId"
           name="lenderId"
           value={form.lenderId}
           onChange={handleChange}
           className="w-full rounded border px-3 py-2"
           required
+          aria-label="Lender"
         >
           <option value="">Select lender</option>
           {lenders.map((lender) => (
@@ -170,12 +194,25 @@ export default function NewLoanForm({
           ))}
         </select>
       </div>
-      {error && <div className="text-red-500">{error}</div>}
+      {error && (
+        <div className="text-red-500" role="alert" aria-live="assertive">
+          {error}
+        </div>
+      )}
       <div className="flex justify-end items-center mt-6">
         <button
           type="submit"
           className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
           disabled={isPending}
+          aria-label={
+            isPending
+              ? editMode
+                ? "Saving..."
+                : "Creating..."
+              : editMode
+              ? "Save Changes"
+              : "Create Loan"
+          }
         >
           {isPending
             ? editMode

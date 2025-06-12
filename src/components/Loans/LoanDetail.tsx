@@ -11,7 +11,11 @@ interface LoanDetailProps {
 
 export default function LoanDetail({ loan }: LoanDetailProps) {
   return (
-    <div className="max-w-xl mx-auto bg-card rounded-lg shadow p-8 mt-8">
+    <div
+      className="max-w-xl mx-auto bg-card rounded-lg shadow p-8 mt-8"
+      role="region"
+      aria-label="Loan Details"
+    >
       <h1 className="text-2xl font-bold mb-6 text-primary">Loan Details</h1>
       <div className="space-y-4">
         <div>
@@ -48,10 +52,14 @@ export default function LoanDetail({ loan }: LoanDetailProps) {
         </div>
       </div>
       <div className="flex justify-between mt-8">
-        <Link href="/loans" className="text-muted-foreground hover:underline">
+        <Link
+          href="/loans"
+          className="text-muted-foreground hover:underline"
+          aria-label="Back to Loans"
+        >
           Back to Loans
         </Link>
-        <Link href={`/loans/${loan.id}/edit`}>
+        <Link href={`/loans/${loan.id}/edit`} aria-label="Edit Loan">
           <button className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">
             Edit
           </button>
