@@ -4,14 +4,15 @@
 
 This is a full-stack Loan Management Dashboard built with Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui, Prisma, and PostgreSQL. It demonstrates modern best practices for scalable, maintainable, and accessible web applications. The project is designed as a take-home for a founding full stack engineer position, with a focus on code quality, developer experience, and real-world usability.
 
+*Currently Hosted on Vercel* at https://loan-management-sample.vercel.app
 ---
 
 ## 🚀 How to Run the Project
 
 ### 1. Clone the Repository
 ```sh
-git clone <repo-url>
-cd loan-management-dashboard
+git clone git@github.com:IkeyBenz/loan-management-sample.git
+cd loan-management-sample
 ```
 
 ### 2. Install Dependencies
