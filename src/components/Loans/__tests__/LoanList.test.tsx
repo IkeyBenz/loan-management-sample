@@ -53,8 +53,8 @@ describe("LoanList", () => {
     // Check if all loans are rendered
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
-    expect(screen.getByText(/1000.00/)).toBeInTheDocument();
-    expect(screen.getByText(/2000.00/)).toBeInTheDocument();
+    expect(screen.getByText("$1,000.00")).toBeInTheDocument();
+    expect(screen.getByText("$2,000.00")).toBeInTheDocument();
   });
 
   it('shows "No loans found" when the list is empty', () => {
